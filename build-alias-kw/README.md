@@ -6,7 +6,7 @@ the REPL, but `joltc build` fails while scanning requires:
 
 ```sh
 $ joltc -M:run
-config: #:clojure.string{:trim-mode :both}
+config: {:clojure.string/trim-mode :both}
 ok — alias-resolved keywords work at runtime
 
 $ joltc build -m app.core -o app
