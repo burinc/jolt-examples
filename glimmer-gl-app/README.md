@@ -18,8 +18,8 @@ it to the renderer, which is the only place raw GL draw calls live.
 From this directory:
 
 ```sh
-joltc -M:run            # opens the window
-GLIMMER_GL_DEMO_QUIT_MS=3000 joltc -M:run   # smoke test: auto-close after 3s
+jolt -M:run            # opens the window
+GLIMMER_GL_DEMO_QUIT_MS=3000 jolt -M:run   # smoke test: auto-close after 3s
 ```
 
 The control panel above the GL pane:
@@ -39,7 +39,7 @@ scene flattens to a valid render plan (meshes, triangles, lights, camera), all
 materials resolve, and the `glimmer-gl.gtk` widgets register into glimmer.
 
 ```sh
-joltc -M:check
+jolt -M:check
 ```
 
 ## How it's wired

@@ -4,8 +4,8 @@
   WASD accelerates (q1k3 entity_player friction/accel + gravity), Space jumps,
   mouse-motion always looks (mouse-look), and left-click fires the shotgun
   (hitscan: map-trace + enemy AABB, nearest-wins). Collision is the 128^3 voxel
-  set from fps-demo.map. Run with `joltc -M:run`; smoke-test headlessly with
-  `FPS_DEMO_AUTO_QUIT_MS=3000 joltc -M:run`."
+  set from fps-demo.map. Run with `jolt -M:run`; smoke-test headlessly with
+  `FPS_DEMO_AUTO_QUIT_MS=3000 jolt -M:run`."
   (:require [glimmer.core   :as ui]
             [glimmer-gl.gtk :as ggtk]
             [fps-demo.render :as render]

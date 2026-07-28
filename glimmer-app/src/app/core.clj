@@ -153,7 +153,7 @@
           :app-id "glimmer.app.todos"))
 
 ;; Live development from the REPL (reagent-style), all in one window:
-;;   1. `joltc nrepl-server` in this directory, then connect your editor.
+;;   1. `jolt nrepl-server` in this directory, then connect your editor.
 ;;   2. Evaluate (-main) to open the window. The eval returns; the app keeps
 ;;      running, so the session stays live.
 ;;   3. Reactive edits show up on their own: (swap! ...) / (reset! ...) a ratom the

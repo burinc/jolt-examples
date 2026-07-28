@@ -3,7 +3,7 @@
    its declarations generated, the glimmer-gl geometry pipeline produces a
    well-formed vertex buffer for each shape, and the glimmer-gl.gtk extension
    loads (its :gl-area / :scale widgets register into glimmer). Needs no GL
-   context and no display. Run with `joltc -M:check`."
+   context and no display. Run with `jolt -M:check`."
   (:require [clojure.string :as str]
             [gl-demo.scene :as scene]
             [glimmer-gl.shader :as sh]

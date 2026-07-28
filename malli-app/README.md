@@ -4,7 +4,7 @@ Runs [metosin/malli](https://github.com/metosin/malli) on jolt for data schema
 validation.
 
 ```
-joltc run -m app.core
+jolt run -m app.core
 ```
 
 (malli's `.cljc` sources read their `:clj` branches — `:clj` is one of jolt's

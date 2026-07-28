@@ -2,7 +2,7 @@
   "Per-frame performance probe (headless). Reports the realistic per-frame CPU
   cost after the pose-cache + particle-builder optimizations. The enemy path is
   measured both cold (first frame, cache misses) and warm (steady state, hits).
-  Run: joltc -M:perf."
+  Run: jolt -M:perf."
   (:require [fps-demo.map         :as lvl]
             [fps-demo.maps.l      :as lvl-data]
             [fps-demo.model       :as model]

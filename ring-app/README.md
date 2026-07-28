@@ -15,14 +15,14 @@ and CSRF middleware needs `javax.crypto`, which **jolt-lang/jolt-crypto** suppli
 over the system OpenSSL — so the whole `site-defaults` stack loads and runs.
 
 ```
-joltc serve                     # listen on config.edn's :port (3000)
-PORT=8080 joltc serve           # PORT beats config.edn (Integrant applies the override)
-joltc -M:test                   # rendering, routing, middleware, the guestbook
+jolt serve                     # listen on config.edn's :port (3000)
+PORT=8080 jolt serve           # PORT beats config.edn (Integrant applies the override)
+jolt -M:test                   # rendering, routing, middleware, the guestbook
 ```
 
 Then visit <http://127.0.0.1:3000>, sign the guestbook, and watch the request log.
-(`joltc run` won't work — `run` is a built-in jolt command, so the project's
-`:serve` task is what starts the server; `joltc -m app.core` is the long form.)
+(`jolt run` won't work — `run` is a built-in jolt command, so the project's
+`:serve` task is what starts the server; `jolt -m app.core` is the long form.)
 
 ## Dev mode (REPL)
 
@@ -30,8 +30,8 @@ For live development, start an nREPL server and connect your editor, or use the
 terminal REPL in this directory:
 
 ```
-joltc nrepl-server              # nREPL on 127.0.0.1:7888 (.nrepl-port written)
-joltc                           # ...or a terminal REPL
+jolt nrepl-server              # nREPL on 127.0.0.1:7888 (.nrepl-port written)
+jolt                           # ...or a terminal REPL
 ```
 
 `-main` blocks on a sleep loop, so in the REPL start the Integrant system by
@@ -68,13 +68,13 @@ FFI + runtime. Git deps are fetched once into `~/.jolt/gitlibs`.
 
 ## Standalone binary
 
-`joltc build` compiles the app and every library into one executable that loads
+`jolt build` compiles the app and every library into one executable that loads
 its native libs (libc sockets, libsqlite3) at startup, so it runs with no jolt or
 Chez on the path:
 
 ```
-joltc build -m app.core               # -> target/release/ring-app
-joltc build -m app.core --dev         # -> target/debug/ring-app
+jolt build -m app.core               # -> target/release/ring-app
+jolt build -m app.core --dev         # -> target/debug/ring-app
 PORT=8080 ./target/release/ring-app
 ```
 
@@ -95,7 +95,7 @@ to ship it, selected in `deps.edn`:
 :jolt/build {:embed ["resources"]}
 ```
 
-`joltc build` bakes everything under `resources/` into the binary. It runs from
+`jolt build` bakes everything under `resources/` into the binary. It runs from
 any directory with no `resources/` dir present:
 
 ```
@@ -119,7 +119,7 @@ the template lazily on first render so the two modes stay distinct.)
 
 ## Requirements
 
-- `joltc` on PATH, the system `libsqlite3` (preinstalled on macOS and most Linux
+- `jolt` on PATH, the system `libsqlite3` (preinstalled on macOS and most Linux
   distros), and OpenSSL (`libssl`/`libcrypto`) for jolt-crypto.
 
 ## Notes

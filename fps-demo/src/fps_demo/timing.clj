@@ -1,6 +1,6 @@
 (ns fps-demo.timing
   "Pure-compute timing of everything init!/core top-level do at realize/load
-  time — NO GL calls, runs headless. Run: joltc -M:timing. Flushes each line.
+  time — NO GL calls, runs headless. Run: jolt -M:timing. Flushes each line.
   If one step eats tens of seconds, that's the startup/black-screen cause
   (render! stays nil->black until init! returns)."
   (:require [fps-demo.map         :as lvl]

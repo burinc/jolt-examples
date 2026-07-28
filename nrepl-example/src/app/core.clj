@@ -6,9 +6,9 @@
   reload code, or call functions — no SSH + restart cycle.
 
   Run interpreted:
-    joltc run -m app.core
+    jolt run -m app.core
   Or build a standalone binary, then run it:
-    joltc build -m app.core -o nrepl-example
+    jolt build -m app.core -o nrepl-example
     ./nrepl-example [port]
 
   It listens on 127.0.0.1:7888 (override with a port arg or JOLT_NREPL_PORT),
@@ -94,7 +94,7 @@
 
 (defn start-nrepl!
   "Start the nREPL server with the session/completion/lookup middleware, on a
-  background thread. Mirrors `joltc nrepl`: block SIGINT on this thread first so
+  background thread. Mirrors `jolt nrepl`: block SIGINT on this thread first so
   ^C lands here (not on the server's accept loop, which is parked in a foreign
   recv), bind the socket (a port-in-use error throws here), then register stop as
   a shutdown hook so ^C tears it down cleanly. Returns the stop fn."

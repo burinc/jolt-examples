@@ -4,7 +4,7 @@ Runs [markdown-clj](https://github.com/yogthos/markdown-clj) on jolt to render
 Markdown to HTML.
 
 ```
-joltc run -m app.core
+jolt run -m app.core
 ```
 
 (set `JOLT_FEATURES=clj,jolt,default` so the `.cljc` sources read their `:clj`

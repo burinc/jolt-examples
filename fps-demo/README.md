@@ -23,8 +23,8 @@ more weapons/pickups, the second level, and audio.
 From this directory:
 
 ```sh
-joltc -M:run                                       # opens a 640x480 window
-FPS_DEMO_AUTO_QUIT_MS=3000 joltc -M:run            # smoke test: auto-close after 3s
+jolt -M:run                                       # opens a 640x480 window
+FPS_DEMO_AUTO_QUIT_MS=3000 jolt -M:run            # smoke test: auto-close after 3s
 ```
 
 Controls:
@@ -60,7 +60,7 @@ physics integrates correctly, and the `.rmf` model parser decodes vertices,
 normals, UVs, and multi-frame bounds.
 
 ```sh
-joltc -M:check
+jolt -M:check
 ```
 
 ## How it's wired

@@ -24,7 +24,7 @@ plumbing is real: a background loop mutates an atom, and the nREPL middleware
 Interpreted, with the nREPL server on `127.0.0.1:7888`:
 
 ```
-joltc run -m app.core
+jolt run -m app.core
 ```
 
 It writes `.nrepl-port` and parks until `^C`. Point CIDER / Calva / Cursive at
@@ -34,21 +34,21 @@ Run the test suite (starts the server in-process, connects a client, drives
 state over the wire, checks the device loop):
 
 ```
-joltc -M:test
+jolt -M:test
 ```
 
 For an ad-hoc REPL into this project without running the app's main:
 
 ```
-joltc nrepl
+jolt nrepl
 ```
 
 ## Compile for release
 
-A self-contained native binary (no `joltc`, no JVM, ~MBs):
+A self-contained native binary (no `jolt`, no JVM, ~MBs):
 
 ```
-joltc build -m app.core -o nrepl-example
+jolt build -m app.core -o nrepl-example
 ./nrepl-example          # listens on 7888
 ./nrepl-example 4005     # or pass a port
 ```
@@ -63,7 +63,7 @@ close the server and stop the device loop). Connect an editor exactly as in dev
 
 ## How it works
 
-- `start-nrepl!` mirrors what `joltc nrepl` does: it blocks `SIGINT` on the main
+- `start-nrepl!` mirrors what `jolt nrepl` does: it blocks `SIGINT` on the main
   thread (so `^C` lands there, not on the server's socket `recv`), starts the
   server on a worker thread with the library middleware, and registers its stop
   fn as a shutdown hook.
@@ -75,5 +75,5 @@ close the server and stop the device loop). Connect an editor exactly as in dev
 
 ## Requirements
 
-- `joltc` on PATH.
+- `jolt` on PATH.
 - The jolt-lang/nrepl dependency is fetched automatically from git on first run.

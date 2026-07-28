@@ -3,7 +3,7 @@
 Jolt's built-in HTTP client, `jolt.http-client`, against real HTTPS endpoints.
 
 ```
-joltc run -m app.core
+jolt run -m app.core
 ```
 
 The client is part of jolt — no dependencies. It's backed by the system `curl`
@@ -27,6 +27,6 @@ A response is `{:status N :headers {…} :body "…"}`. Options: `:headers`,
 
 ## Requirements
 
-- `joltc` on PATH, and the system `curl` binary (preinstalled on macOS and most
+- `jolt` on PATH, and the system `curl` binary (preinstalled on macOS and most
   Linux distros).
 - A network connection for the real endpoints.

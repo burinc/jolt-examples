@@ -120,7 +120,7 @@
   (-> (io/file "config.edn") slurp ig/read-string))
 
 (defmethod ig/init-key :app/config [_ cfg]
-  ;; PORT / DATABASE_URL beat config.edn — preserves the `PORT=8080 joltc run`
+  ;; PORT / DATABASE_URL beat config.edn — preserves the `PORT=8080 jolt run`
   ;; behavior now that Integrant owns the config.
   (let [env #(System/getenv %)]
     (cond-> cfg

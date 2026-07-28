@@ -40,7 +40,7 @@ glimmer-app/
 ## Run it
 
 ```sh
-joltc -M:run        # or: joltc run
+jolt -M:run        # or: jolt run
 ```
 
 This opens the window and blocks until you close it.
@@ -50,7 +50,7 @@ This opens the window and blocks until you close it.
 Start an nREPL server and connect your editor (Calva, CIDER, Cursive):
 
 ```sh
-joltc nrepl-server        # writes .nrepl-port; ^C to stop
+jolt nrepl-server        # writes .nrepl-port; ^C to stop
 ```
 
 Then evaluate `(app.core/-main)` to open the window. The eval returns right away
@@ -75,7 +75,7 @@ mutation off the main thread.
 ## Build a standalone binary
 
 ```sh
-joltc build -m app.core
+jolt build -m app.core
 ./target/release/glimmer-app
 ```
 

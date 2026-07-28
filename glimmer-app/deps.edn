@@ -8,8 +8,8 @@
  ;; swap to {:git/url ... :git/sha ...} to make this app self-contained.
  :deps {jolt-lang/glimmer {:local/root "../../glimmer"}}
 
- ;; `joltc -M:run` (or the `run` task) opens the window and blocks until it's
- ;; closed. `joltc build` compiles a standalone binary that loads the GTK/glib
+ ;; `jolt -M:run` (or the `run` task) opens the window and blocks until it's
+ ;; closed. `jolt build` compiles a standalone binary that loads the GTK/glib
  ;; libs at startup.
  :aliases {:run {:main-opts ["-m" "app.core"]}}
 
@@ -17,5 +17,5 @@
               :direct-link true
               :tree-shake true}
 
- :tasks {run  "joltc -M:run"
-         build "joltc build -m app.core"}}
+ :tasks {run  "jolt -M:run"
+         build "jolt build -m app.core"}}

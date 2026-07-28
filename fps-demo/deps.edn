@@ -11,5 +11,5 @@
            :timing {:main-opts ["-m" "fps-demo.timing"]}
            :perf   {:main-opts ["-m" "fps-demo.perf"]}}
 
- :tasks {run   "joltc -M:run"
-         check "joltc -M:check"}}
+ :tasks {run   "jolt -M:run"
+         check "jolt -M:check"}}

@@ -2,7 +2,7 @@
   "Drives app.core over a real nREPL connection: starts the server in-process
   (built-in handler + the library middleware), connects a client, and checks that
   the live state can be read and mutated remotely — the whole point of the
-  example. Run with: joltc -M:test"
+  example. Run with: jolt -M:test"
   (:require [app.core :as core]
             [jolt.nrepl :as server]
             [nrepl.core :as nrepl]
