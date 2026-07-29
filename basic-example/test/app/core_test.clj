@@ -1,14 +1,12 @@
 (ns app.core-test
-  "Drives app.core over a real nREPL connection: starts the server in-process
-  (built-in handler + the library middleware), connects a client, and checks that
-  the live state can be read and mutated remotely — the whole point of the
-  example. Run with: jolt -M:test"
-  (:require [app.core :as core]
-            [jolt.nrepl :as server]
-            [nrepl.core :as nrepl]
-            [nrepl.middleware]))
+  "Checks app.core, the minimal example: -main greets, joins its arguments, and
+  returns. Run with: jolt -M:test
 
-(def ^:private test-port 7917)
+  This file used to be a byte-identical copy of nrepl-example's suite, driving an
+  app.core with live device state (status/toggle-led!/start-device-loop!) over a
+  real nREPL connection. None of those vars exist here — this example is a
+  hello-world — so it could never have passed."
+  (:require [app.core :as core]))
 
 (def failures (atom 0))
 
@@ -18,46 +16,27 @@
     (do (swap! failures inc)
         (println "  FAIL" label "— expected" (pr-str expected) "got" (pr-str actual)))))
 
-(defn- eval-value
-  "Connect-side: eval `code` and return its single read value."
-  [t code]
-  (-> (nrepl/message t {:op "eval" :code code})
-      (nrepl/response-values)
-      first))
-
-(defn- run-remote-checks [t]
-  (println "nREPL eval round-trips")
-  (check "(+ 1 2) => 3" 3 (eval-value t "(+ 1 2)"))
-
-  (println "inspect + mutate live state over the wire")
-  (check "led starts off" false (:led (eval-value t "(app.core/status)")))
-  (check "toggle-led! => on" true (eval-value t "(app.core/toggle-led!)"))
-  (check "status reflects the toggle" true (:led (eval-value t "(app.core/status)")))
-  (check "log! returns the new count" 2 (eval-value t "(app.core/log! \"from-test\")"))
-  (check "recent-log carries the entry" ["system started" "from-test"]
-         (eval-value t "(app.core/recent-log)")))
-
-(defn- run-loop-check []
-  (println "background device loop advances state")
-  (let [stop-loop (core/start-device-loop!)
-        before    (:ticks @core/system)]
-    (Thread/sleep 1300)
-    (let [after (:ticks @core/system)]
-      (stop-loop)
-      (check "ticks increased while running" true (> after before)))))
-
 (defn -main [& _]
-  (let [stop (server/start test-port ['nrepl.middleware/default-middleware])]
-    (try
-      (let [t (nrepl/connect "127.0.0.1" test-port)]
-        (try
-          (run-remote-checks t)
-          (run-loop-check)
-          (finally (nrepl/close t))))
-      (finally (stop)))
-    (println)
-    (if (zero? @failures)
-      (println "all passed")
-      (println @failures "FAILED"))
-    (when (pos? @failures)
-      (throw (ex-info "test failures" {:n @failures})))))
+  (println "app.core/-main")
+  ;; println puts a space between its arguments, so the no-args greeting keeps a
+  ;; trailing space before the newline. Asserted exactly rather than trimmed, so
+  ;; a change to the greeting shows up here.
+  (check "greets with no arguments" "Hello from Jolt! \n"
+         (with-out-str (core/-main)))
+  (check "joins its arguments" "Hello from Jolt! a, b\n"
+         (with-out-str (core/-main "a" "b")))
+  ;; -main returning at all is the point: it used to park in
+  ;; (loop [] (Thread/sleep 3600000) (recur)), left over from the nREPL example,
+  ;; so the greeting printed and the program then hung forever. Capture the return
+  ;; through an atom so the greeting stays off this suite's output.
+  (check "-main returns nil" nil
+         (let [ret (atom :never-returned)]
+           (with-out-str (reset! ret (core/-main "done")))
+           @ret))
+
+  (println)
+  (if (zero? @failures)
+    (println "all passed")
+    (println @failures "FAILED"))
+  (when (pos? @failures)
+    (throw (ex-info "test failures" {:n @failures}))))

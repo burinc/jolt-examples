@@ -9,7 +9,6 @@
   (:require [clojure.string :as string]))
 
 (defn -main [& args]
-  (println "Hello from Jolt!" (string/join ", " args))
-  (loop [] (Thread/sleep 3600000) (recur)))
+  (println "Hello from Jolt!" (string/join ", " args)))
 
 

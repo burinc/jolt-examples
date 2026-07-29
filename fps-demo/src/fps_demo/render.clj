@@ -146,6 +146,11 @@
       [(double (* (:x spawn) 32)) (double (+ (* (:y spawn) 16) 48.0)) (double (* (:z spawn) 32))]
       [256.0 64.0 256.0])))
 
+;; init! builds the enemy VBO through init-enemies! (L205), and draw! renders it
+;; through draw-enemies! (L336); both live further down beside the rest of the
+;; enemy model loading, so declare them here.
+(declare init-enemies! draw-enemies!)
+
 (defn init!
   "Compile the q1k3 pipeline + upload the whole static level into one VBO. Call
    once, with a current GL context (i.e. from on-realize). Returns the opaque
