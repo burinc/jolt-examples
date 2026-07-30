@@ -30,9 +30,9 @@
 
 (defn -main [& _]
   (println "selmer template rendering")
-  (check-has "renders the name through the upper filter" "<h1>Hello JOLT!</h1>"
+  (check-has "renders the name through the upper filter" "<h1>Hello <span class=\"accent\">JOLT</span>!</h1>"
              (core/render-index {:name "jolt" :motd nil :features []} nil {}))
-  (check-has "params win over config" "<h1>Hello VISITOR!</h1>"
+  (check-has "params win over config" "<h1>Hello <span class=\"accent\">VISITOR</span>!</h1>"
              (core/render-index {:name "jolt"} nil {:name "visitor"}))
   (check-has "motd renders when present" "<p class=\"motd\">hi</p>"
              (core/render-index {:motd "hi"} nil {}))
@@ -47,7 +47,7 @@
   (let [system (ig/init test-config)
         app    (:app/handler system)
         conn   (:app/db system)]
-    (check-has "query params reach the template" "Hello WEB!"
+    (check-has "query params reach the template" "Hello <span class=\"accent\">WEB</span>!"
                (:body (app {:request-method :get :uri "/" :query-string "name=web" :headers {}})))
     (check-has "reitit path-param route" "Hello Alice!"
                (:body (app {:request-method :get :uri "/greetings/Alice" :query-string nil :headers {}})))
@@ -69,14 +69,14 @@
                           :headers {"content-type" "application/x-www-form-urlencoded"}
                           :body (java.io.StringReader. "name=alan")})))
     (check "signed" 3 (db/greeting-count conn))
-    (check-has "page shows the signatures" "<li>alan"
+    (check-has "page shows the signatures" "<li><span class=\"who\">alan</span>"
                (:body (app {:request-method :get :uri "/" :query-string nil :headers {}})))
 
     (println "end-to-end — live server over the wire (started by :app/server)")
     (Thread/sleep 200)
     (let [resp (http/get "http://127.0.0.1:8377/?name=Ring")]
       (check "live server responds 200" true (= 200 (:status resp)))
-      (check-has "live server serves the page" "Hello RING!" (:body resp)))
+      (check-has "live server serves the page" "Hello <span class=\"accent\">RING</span>!" (:body resp)))
 
     (try (ig/halt! system)
          (catch Throwable e
