@@ -78,7 +78,7 @@
          ;; nREPL middleware — sessions, interruptible-eval, completions, lookup,
          ;; and the cider-nrepl op set (info, complete, test, …) editors expect
          jolt-lang/nrepl {:git/url "https://github.com/jolt-lang/nrepl"
-                          :git/sha "c9b2799e2359aa9d02f5e20c5161eed282aa4578"}}
+                          :git/tag "v0.1.0" :git/sha "5314b3d97ea3"}}
 
  ;; `jolt build -m app.core` bakes these dirs' files into the binary, so the
  ;; Selmer template + CSS resolve via io/resource with no resources/ dir on disk.
