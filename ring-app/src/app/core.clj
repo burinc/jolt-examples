@@ -21,7 +21,11 @@
 
   jolt.time (the java.time.* host shim) is required before tick: tick pulls in
   cljc.java-time, whose namespaces touch java.time.* statics at load time, and
-  those resolve only once jolt.time has installed the shim."
+  those resolve only once jolt.time has installed the shim.
+
+  /upload parses multipart/form-data with jolt-lang/multipart. ring's own
+  wrap-multipart-params is written against Apache commons-fileupload, which is
+  JVM-only, so the handler calls that library's API directly."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
@@ -29,6 +33,7 @@
             [selmer.parser :as selmer]
             [jolt.crypto]
             [jolt.time]
+            [multipart.core :as multipart]
             [ring.middleware.defaults :as defaults]
             [ring-chez.adapter :as adapter]
             [app.db :as db]))
@@ -87,11 +92,28 @@
         echo-handler     (fn [{:keys [params]}]
                            {:status 200 :headers {"Content-Type" "text/plain"}
                             :body (pr-str (into (sorted-map) params))})
+        ;; multipart/form-data: text fields come back in :params, uploads in
+        ;; :files, each with its filename, content type and bytes. ring-defaults
+        ;; leaves :body alone for a content type its own middleware cannot parse,
+        ;; so the stream is still here to read.
+        upload-handler   (fn [request]
+                           (let [{:keys [params files]} (multipart/parse-form-data request)]
+                             {:status 200
+                              :headers {"Content-Type" "text/plain"}
+                              :body (pr-str
+                                     {:fields (into (sorted-map) params)
+                                      :files (into (sorted-map)
+                                                   (map (fn [[k f]]
+                                                          [k {:filename (:filename f)
+                                                              :content-type (:content-type f)
+                                                              :size (alength (:bytes f))}]))
+                                                   files)})}))
         router           (reitit/router
                           [["/"                {:name :index :get index-handler}]
                            ["/sign"            {:name :sign :post sign-handler}]
                            ["/greetings/:name" {:name :greeting :get greeting-handler}]
-                           ["/echo"            {:name :echo :post echo-handler}]])
+                           ["/echo"            {:name :echo :post echo-handler}]
+                           ["/upload"          {:name :upload :post upload-handler}]])
         handler          (fn [{:keys [request-method uri] :as request}]
                            (if-let [match (reitit/match-by-path router uri)]
                              (if-let [h (get (:data match) request-method)]
@@ -106,9 +128,16 @@
     ;; resources/public (serving /css/style.css with the right MIME), content-type,
     ;; session, and security headers. Anti-forgery is off so the plain POST form
     ;; signs without a CSRF token.
+    ;;
+    ;; [:params :multipart] is off because ring's wrap-multipart-params is written
+    ;; against Apache commons-fileupload, a JVM library. Leaving it on would have
+    ;; that middleware raise before /upload's handler ever runs; off, the request
+    ;; body reaches the handler and jolt-lang/multipart parses it there.
     (-> handler
         (defaults/wrap-defaults
-          (-> defaults/site-defaults (assoc-in [:security :anti-forgery] false)))
+          (-> defaults/site-defaults
+              (assoc-in [:security :anti-forgery] false)
+              (assoc-in [:params :multipart] false)))
         wrap-log)))
 
 ;; --- Integrant components ---------------------------------------------------

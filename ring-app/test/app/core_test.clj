@@ -58,6 +58,25 @@
                         :headers {"content-type" "application/x-www-form-urlencoded"}
                         :body (java.io.StringReader. "a=1&b=2")})))
 
+    ;; multipart/form-data through jolt-lang/multipart: ring's own middleware is
+    ;; off (commons-fileupload is JVM-only), so /upload parses the body itself.
+    (let [body (str "--BND\r\n"
+                    "Content-Disposition: form-data; name=\"title\"\r\n\r\n"
+                    "my notes\r\n"
+                    "--BND\r\n"
+                    "Content-Disposition: form-data; name=\"doc\"; filename=\"notes.txt\"\r\n"
+                    "Content-Type: text/plain\r\n\r\n"
+                    "hello upload\r\n"
+                    "--BND--")]
+      (check "multipart upload: fields and file metadata"
+             (pr-str {:fields {"title" "my notes"}
+                      :files {"doc" {:filename "notes.txt"
+                                     :content-type "text/plain"
+                                     :size 12}}})
+             (:body (app {:request-method :post :uri "/upload" :query-string nil
+                          :headers {"content-type" "multipart/form-data; boundary=BND"}
+                          :body (java.io.ByteArrayInputStream. (.getBytes body "UTF-8"))}))))
+
     (check "empty guestbook" 0 (db/greeting-count conn))
     (check "add-greeting! returns id" 1 (db/add-greeting! conn "ada"))
     (db/add-greeting! conn "grace")
