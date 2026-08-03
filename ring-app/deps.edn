@@ -22,7 +22,8 @@
          ;; wrap-multipart-params is written against Apache commons-fileupload,
          ;; which is JVM-only, so the handler calls this library's API directly.
          jolt-lang/multipart {:git/url "https://github.com/jolt-lang/multipart"
-                              :git/sha "ca4793e53d3dee509a5d861055b5f7167a379068"}
+                              :git/tag "v0.1.0"
+                              :git/sha "25c89f40786e0c625cc2b0d5c77649dd92db64cb"}
          ring/ring-core {:mvn/version "1.15.4"}
          ring/ring-codec {:mvn/version "1.3.0"}
          ;; ring-defaults bundles a sensible middleware stack (params, static
